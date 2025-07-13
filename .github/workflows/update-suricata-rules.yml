@@ -34,7 +34,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install suricata -y
           mkdir -p /tmp/suricata-logs
-          echo -e "%YAML 1.1\n---\ndefault-rule-path: rules\ndefault-log-dir: /tmp/suricata-logs" > /tmp/suricata.yaml
+          echo -e "%YAML 1.1\n---\nvars:\n  address-groups:\n    HOME_NET: \"[192.168.0.0/16]\"\n    EXTERNAL_NET: \"!$HOME_NET\"\ndefault-rule-path: rules\ndefault-log-dir: /tmp/suricata-logs" > /tmp/suricata.yaml    
           suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
 
       - name: Commit changes

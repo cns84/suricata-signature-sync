@@ -32,7 +32,7 @@ jobs:
 
       - name: Generate Suricata config
         working-directory: ./scripts
-        run: python scripts/gen_suricata_config.py
+        run: python scripts/gsc.py
 
       - name: Validate merged Suricata rules
         run: |

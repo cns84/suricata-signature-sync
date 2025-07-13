@@ -37,6 +37,7 @@ jobs:
       - name: Validate merged Suricata rules
         run: |
           sudo apt-get update && sudo apt-get install suricata -y
+          mkdir -p /tmp/suricata-logs
           suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
 
       - name: Commit changes

@@ -33,7 +33,7 @@ jobs:
       - name: Validate merged Suricata rules
         run: |
           sudo apt-get update && sudo apt-get install suricata -y
-          echo "default-rule-path: rules" > /tmp/suricata.yaml
+          echo -e "%YAML 1.1\n---\ndefault-rule-path: rules" > /tmp/suricata.yaml
           suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
 
       - name: Commit changes

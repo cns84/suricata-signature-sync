@@ -33,10 +33,9 @@ jobs:
       - name: Validate merged Suricata rules
         run: |
           sudo apt-get update && sudo apt-get install suricata -y
-          sudo mkdir -p /etc/suricata/
-          echo "default-rule-path: rules" > /etc/suricata/suricata.yaml
-          suricata -T -c /etc/suricata/suricata.yaml -S rules/combined.rules
-
+          echo "default-rule-path: rules" > /tmp/suricata.yaml
+          suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
+          
       - name: Commit changes
         run: |
           git config --global user.name "automation-bot"

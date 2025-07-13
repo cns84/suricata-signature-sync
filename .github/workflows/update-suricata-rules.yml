@@ -2,7 +2,7 @@ name: Update Suricata Rules
 
 on:
   schedule:
-    - cron: '0 */6 * * *'    # Every 6 hours
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
           sudo apt-get update && sudo apt-get install suricata -y
           echo "default-rule-path: rules" > /tmp/suricata.yaml
           suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
-          
+
       - name: Commit changes
         run: |
           git config --global user.name "automation-bot"

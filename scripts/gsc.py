@@ -13,8 +13,8 @@ config_lines = [
     '    SMTP_SERVERS: "[192.168.1.25]"',
     '    SQL_SERVERS: "[192.168.1.143]"',
     '    SHELLCODE_SERVERS: "[192.168.1.200]"',
-    '    SIP_SERVERS: "[192.168.1.5060]"',
-    '    AIM_SERVERS: "[192.168.1.4099]"'
+    '    SIP_SERVERS: "[192.168.1.60]"',
+    '    AIM_SERVERS: "[192.168.1.99]"'
 ]
 
 # Step 2: Scan combined.rules for additional port variables

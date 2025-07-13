@@ -3,7 +3,7 @@ import os
 
 sources = [
     "https://feed.corelight.com/rules/corelight.rules",
-    #"https://openinfosecfoundation.org/rules/trafficid/trafficid.rules"
+    "https://openinfosecfoundation.org/rules/trafficid/trafficid.rules"
 ]
 
 output_dir = "rules"

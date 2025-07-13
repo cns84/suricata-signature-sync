@@ -1,0 +1,36 @@
+name: Update Suricata Rules
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+
+jobs:
+  fetch-signatures:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run fetch_rules.py
+        run: python scripts/fetch_rules.py
+
+      - name: Run fetch_et_rules.py
+        run: python scripts/fetch_et_rules.py
+
+      - name: Commit updated rules
+        run: |
+          git config --global user.name "automation-bot"
+          git config --global user.email "bot@example.com"
+          git add rules/
+          git commit -m "Auto-update: Suricata rules from both sources"
+          git push

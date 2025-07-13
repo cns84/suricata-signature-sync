@@ -31,6 +31,7 @@ jobs:
         run: python scripts/merge_rules.py
 
       - name: Generate Suricata config
+        working-directory: ./scripts
         run: python scripts/gen_suricata_config.py
 
       - name: Validate merged Suricata rules

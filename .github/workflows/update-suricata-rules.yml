@@ -1,0 +1,44 @@
+name: Update Suricata Rules
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'    # Every 6 hours
+  workflow_dispatch:
+
+jobs:
+  update-rules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run fetch_rules.py
+        run: python scripts/fetch_rules.py
+
+      - name: Run fetch_et_rules.py
+        run: python scripts/fetch_et_rules.py
+
+      - name: Run merge_rules.py
+        run: python scripts/merge_rules.py
+
+      - name: Validate merged Suricata rules
+        run: |
+          sudo apt-get update && sudo apt-get install suricata -y
+          suricata -T -c /etc/suricata/suricata.yaml -S rules/combined.rules
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "automation-bot"
+          git config --global user.email "bot@example.com"
+          git add rules/
+          git commit -m "Snapshot $(date '+%Y-%m-%d %H:%M') — merged $(wc -l < rules/combined.rules) rules"
+          git push

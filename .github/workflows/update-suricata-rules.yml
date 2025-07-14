@@ -1,7 +1,9 @@
 name: update-suricata-rules
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 5,17 * * *'  # Every 12 hours starting at midnight EST (5am & 5pm UTC)
+  workflow_dispatch:       # Optional manual trigger
 
 permissions:
   contents: write  # ✅ Enables GITHUB_TOKEN push access if ever needed

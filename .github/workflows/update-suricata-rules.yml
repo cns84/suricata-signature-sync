@@ -17,15 +17,6 @@ jobs:
           persist-credentials: true  # ✅ Required for push
           token: ${{ secrets.PAT_TOKEN }}
 
-      # Then later when pushing
-      - name: Push changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git add rules/combined.rules /tmp/suricata.yaml
-          git diff --cached --quiet || git commit -m "Automated update"
-          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/cns84/suricata-signature-sync.git main
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -53,12 +44,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y suricata
           mkdir -p /tmp/suricata-logs
-          suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
+          suricata -T -c suricata.yaml -S rules/combined.rules
 
-      - name: Commit & push updated rules
+      - name: Commit & push updated rules and config
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add rules/combined.rules /tmp/suricata.yaml
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add rules/combined.rules suricata.yaml
           git diff --cached --quiet || git commit -m "Automated rules update: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          git push origin main
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/cns84/suricata-signature-sync.git main

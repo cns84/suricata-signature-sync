@@ -27,6 +27,7 @@ try:
         for line in f:
             for match in port_variable_pattern.findall(line):
                 port_vars_found.add(match)
+    print(f"🔍 Detected port variables: {sorted(port_vars_found)}")
 except FileNotFoundError:
     print("❌ combined.rules not found. Skipping variable scan.")
 

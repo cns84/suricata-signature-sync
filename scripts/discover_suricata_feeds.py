@@ -7,9 +7,9 @@ STATIC_FEEDS = {
     "ET Open": "https://rules.emergingthreats.net/open/suricata-5.0/emerging.rules",
     "TrafficID": "https://openinfosecfoundation.org/rules/trafficid/trafficid.rules",
     "Corelight": "https://feed.corelight.com/rules/corelight.rules",
-    "CriticalPathSecurity": "https://raw.githubusercontent.com/CriticalPathSecurity/Suricata-Signatures/main/All.rules",
+    "CriticalPathSecurity": "https://raw.githubusercontent.com/CriticalPathSecurity/Suricata-Signatures/main/merged.rules",
     "SSLBL": "https://sslbl.abuse.ch/blacklist/sslblacklist.rules",
-    "Open NRD": "https://raw.githubusercontent.com/StamusNetworks/open-nrd-rules/main/open-nrd.rules"
+    "Open NRD": "https://raw.githubusercontent.com/StamusNetworks/open-nrd-rules/main/open-nrd.rules.txt"
 }
 
 # GitHub search (requires token for rate-limit avoidance)

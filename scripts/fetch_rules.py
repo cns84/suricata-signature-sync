@@ -2,12 +2,11 @@ import requests
 import os
 
 # 🧭 Define rule sources with display names
-sources = {
-    "Corelight": "https://feed.corelight.com/rules/corelight.rules",
+
+STATIC_FEEDS = {
     "TrafficID": "https://openinfosecfoundation.org/rules/trafficid/trafficid.rules",
-    "CriticalPathSecurity": "https://raw.githubusercontent.com/CriticalPathSecurity/Suricata-Signatures/main/merged.rules",
-    "SSLBL (Abuse.ch)": "https://sslbl.abuse.ch/blacklist/sslblacklist.rules",
-    "Open NRD (Stamus)": "https://downloads.stamus-networks.com/open-nrd/open-nrd.rules"
+    "Corelight": "https://feed.corelight.com/rules/corelight.rules",
+    "SSLBL": "https://sslbl.abuse.ch/blacklist/sslblacklist.rules"
 }
 
 output_dir = "rules"

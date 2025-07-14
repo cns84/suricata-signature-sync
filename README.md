@@ -53,28 +53,30 @@ Workflow Overview
 Directory Structure
 ----------------------------------------------------------------------
 
-.
-├── discovered_rules/        # Raw downloaded rules per feed
-├── rules/
-│   ├── combined.rules        # Merged raw rules
-│   ├── combined.final.rules  # Post-processed rule set
-│   ├── duplicates.rules      # Removed duplicates
-│   ├── disabled.rules        # Disabled via conf rules
-│   ├── sid_collisions.log    # Detected SID conflicts
-│   └── sync_status.log       # Last sync summary
-├── conf/
-│   ├── enable.conf           # Force-enable rules
-│   ├── disable.conf          # Disable rules selectively
-│   └── modify.conf           # Rewrite rule fields
-├── scripts/
-│   ├── discover_suricata_feeds.py
-│   ├── fetch_rules.py
-│   └── postprocess_rules.py
-└── .github/workflows/
-    └── update-suricata-rules.yml
+```bash
+ .
+ ├── discovered_rules/        # Raw downloaded rules per feed
+ ├── rules/
+ │   ├── combined.rules       # Merged raw rules
+ │   ├── combined.final.rules # Post-processed and curated rules
+ │   ├── duplicates.rules     # Removed duplicate entries
+ │   ├── disabled.rules       # Filtered via conf/disable.conf
+ │   ├── sid_collisions.log   # SID overlap detection
+ │   └── sync_status.log      # Timestamped status summary
+ ├── conf/
+ │   ├── enable.conf          # Force-enable rules
+ │   ├── disable.conf         # Disable noisy/problematic rules
+ │   └── modify.conf          # Targeted field rewrites
+ ├── scripts/
+ │   ├── discover_suricata_feeds.py
+ │   ├── fetch_rules.py
+ │   └── postprocess_rules.py
+ └── .github/workflows/
+     └── update-suricata-rules.yml
+```
 
 ----------------------------------------------------------------------
-GitHub Token Setup
+🔒 GitHub Token Setup
 ----------------------------------------------------------------------
 
 Required for GitHub API search:
@@ -113,9 +115,8 @@ Credits & License
 
 MIT License
 
-Created by Daniel Clark
-Architected with support from Microsoft Copilot  
-Optimized for scalable, traceable Suricata deployments
+Created by Daniel with strategic architectural contributions from Microsoft Copilot 🤝
+Built for precision Suricata deployments across scalable sensor environments.
 
 Useful Resources:
 - Suricata Documentation: https://suricata.io/documentation/

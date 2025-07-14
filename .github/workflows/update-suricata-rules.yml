@@ -15,7 +15,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           persist-credentials: true  # ✅ Required for push
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
+
+      # Then later when pushing
+      - name: Push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add rules/combined.rules /tmp/suricata.yaml
+          git diff --cached --quiet || git commit -m "Automated update"
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/cns84/suricata-signature-sync.git main
 
       - name: Set up Python
         uses: actions/setup-python@v4

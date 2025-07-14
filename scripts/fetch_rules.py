@@ -17,7 +17,7 @@ downloaded = 0
 failed = 0
 
 with open(combined_path, "wb") as combined:
-    for name, url in sources.items():
+    for name, url in STATIC_FEEDS.items():
         print(f"🔄 Fetching [{name}] from {url}")
         try:
             response = requests.get(url, timeout=10)

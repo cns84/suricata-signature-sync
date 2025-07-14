@@ -49,11 +49,11 @@ Pipeline Workflow Overview
 6. README Sync Status Update
    - Workflow automatically replaces metadata block at bottom of README.md
    - Uses clear marker anchors for automated edits:
-     <!-- SYNC_STATUS_BEGIN -->
-     Last sync: 2025-07-14 17:00 UTC
-     Rule count: 8421
-     SID collisions: 3
-     <!-- SYNC_STATUS_END -->
+<!-- SYNC_STATUS_BEGIN -->
+Last sync: 2025-07-14 20:49 UTC
+Rule count: 81216
+SID collisions: 0
+<!-- SYNC_STATUS_END -->
 
 7. GitHub Actions Automation
    Workflow file: .github/workflows/update-suricata-rules.yml
@@ -143,7 +143,7 @@ SYNC STATUS
 ------------------------------------------------------------------
 
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-14 17:00 UTC  
-Rule count: 8421  
-SID collisions: 3  
+Last sync: 2025-07-14 20:49 UTC
+Rule count: 81216
+SID collisions: 0
 <!-- SYNC_STATUS_END -->

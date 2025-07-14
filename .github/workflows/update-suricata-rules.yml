@@ -40,6 +40,9 @@ jobs:
       - name: Merge all rules into combined.rules
         run: python scripts/merge_rules.py
 
+      - name: Post-process merged rules
+        run: python scripts/postprocess_rules.py
+
       - name: Generate dynamic Suricata config
         run: python scripts/gen_suricata_config.py
 

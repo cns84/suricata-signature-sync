@@ -7,7 +7,7 @@ from datetime import datetime
 script_dir  = os.path.dirname(os.path.abspath(__file__))
 repo_root   = os.path.abspath(os.path.join(script_dir, ".."))
 rules_path  = os.path.join(repo_root, "rules", "combined.rules")
-output_path = "/tmp/suricata.yaml"
+output_path = os.path.join(repo_root, "suricata.yaml")  # ✅ Write to repo root
 
 print(f"🔍 Scanning rules file at: {rules_path}")
 
@@ -50,10 +50,8 @@ detected_ports = set()
 if os.path.exists(rules_path):
     with open(rules_path, "r") as f:
         for line in f:
-            for var in net_pattern.findall(line):
-                detected_nets.add(var)
-            for var in port_pattern.findall(line):
-                detected_ports.add(var)
+            detected_nets.update(net_pattern.findall(line))
+            detected_ports.update(port_pattern.findall(line))
 else:
     print(f"❌ {rules_path} not found, skipping variable detection")
 
@@ -75,20 +73,19 @@ for var in sorted(detected_nets):
     lines.append(f'    {var}: "{val}"')
 
 # 6b. Populate port-groups
-lines.append("")              # blank line for readability
+lines.append("")  # blank line for readability
 lines.append("  port-groups:")
 for var in sorted(detected_ports):
     val = port_defaults.get(var, "[1]")
     lines.append(f'    {var}: "{val}"')
 
 # 7. Final stanzas
-lines.append("")              
+lines.append("")
 lines.append("default-rule-path: rules")
 lines.append("default-log-dir: /tmp/suricata-logs")
-lines.append("")              # ensure trailing newline
+lines.append("")
 
-# 8. Write out the YAML
-os.makedirs(os.path.dirname(output_path), exist_ok=True)
+# 8. Write out config to repo root
 with open(output_path, "w") as out:
     out.write("\n".join(lines))
 

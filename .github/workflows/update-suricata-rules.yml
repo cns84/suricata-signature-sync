@@ -1,48 +1,55 @@
-name: Update Suricata Rules
+name: update-suricata-rules
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write  # ✅ Enables push access for GITHUB_TOKEN
+
 jobs:
-  update-rules:
+  update:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true  # ✅ Required for push
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.x"
 
-      - name: Install dependencies
-        run: pip install requests
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run fetch_rules.py
+      - name: Fetch community Suricata rules
         run: python scripts/fetch_rules.py
 
-      - name: Run fetch_et_rules.py
+      - name: Fetch Emerging Threats rules
         run: python scripts/fetch_et_rules.py
 
-      - name: Run merge_rules.py
+      - name: Merge all rules into combined.rules
         run: python scripts/merge_rules.py
 
-      - name: Generate Suricata config        
+      - name: Generate dynamic Suricata config
         run: python scripts/gen_suricata_config.py
 
       - name: Validate merged Suricata rules
         run: |
-          sudo apt-get update && sudo apt-get install suricata -y
+          sudo apt-get update
+          sudo apt-get install -y suricata
           mkdir -p /tmp/suricata-logs
           suricata -T -c /tmp/suricata.yaml -S rules/combined.rules
 
-      - name: Commit changes
+      - name: Commit & push updated rules
         run: |
-          git config --global user.name "automation-bot"
-          git config --global user.email "bot@example.com"
-          git add rules/
-          git commit -m "Snapshot $(date '+%Y-%m-%d %H:%M') — merged $(wc -l < rules/combined.rules) rules"
-          git push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add rules/combined.rules /tmp/suricata.yaml
+          git diff --cached --quiet || git commit -m "Automated rules update: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          git push origin main

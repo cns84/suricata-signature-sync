@@ -61,6 +61,24 @@ jobs:
           echo "🪪 SID Collisions: $COLLISIONS" >> rules/sync_status.log
           echo "✅ Status: Completed" >> rules/sync_status.log
 
+      - name: Update README sync status
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
+          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          sed -i '/<!-- SYNC_STATUS_BEGIN -->/,/<!-- SYNC_STATUS_END -->/c\
+          <!-- SYNC_STATUS_BEGIN -->\
+          Last sync: '"$TIMESTAMP"'\
+          Rule count: '"$RULE_COUNT"'\
+          SID collisions: '"$COLLISIONS"'\
+          <!-- SYNC_STATUS_END -->' README.md
+
+      - name: Commit README update
+        run: |
+          git add README.md
+          git commit -m "📘 Sync metadata updated in README: $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "No changes"
+          git push
+
       - name: Commit final rules and sync log
         run: |
           git config --global user.name "GitHub Actions"

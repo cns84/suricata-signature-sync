@@ -1,57 +1,123 @@
-# Suricata Signature Sync
+Suricata Signature Sync
+=======================
 
-A modular, automated pipeline for discovering, curating, and deploying Suricata signatures from public and GitHub-based sources. Designed for large-scale network environments requiring feed provenance, rule hygiene, and continuous updates.
+Automated feed discovery, rule curation, and deployment for high-performance Suricata pipelines.
 
----
+This repository powers a scalable signature management system for Suricata. It dynamically pulls rules from public sources, performs post-processing to ensure hygiene and accuracy, and keeps your rule corpus updated every 12 hours via GitHub Actions — complete with override logic, SID collision detection, and status logging.
 
-## 🧠 What This Project Does
+Built for large-scale environments with thousands of sensors and terabytes of daily traffic. Precision signature orchestration starts here.
 
-- 📡 Discovers Suricata rule feeds from multiple public sources
-- 🌐 Searches GitHub repositories for `.rules` files
-- 📦 Merges rules into a unified corpus
-- 🔍 Post-processes rules to:
-  - Remove duplicates
-  - Detect and resolve SID collisions
-  - Filter disabled or noisy rules
-  - Apply SID-specific overrides via `conf/`
-- 🕒 Schedules automated syncs every 12 hours via GitHub Actions
-- 📊 Logs sync results to `rules/sync_status.log`
+----------------------------------------------------------------------
+Workflow Overview
+----------------------------------------------------------------------
 
----
+1. Feed Discovery
+   - Script: scripts/discover_suricata_feeds.py
+   - Collects .rules files from public sources (Corelight, SSLBL, TrafficID)
+   - Authenticated GitHub search enabled via GH_API_TOKEN
+   - Files saved to: discovered_rules/
 
-## 🔁 Workflow Overview
+2. Rule Compilation
+   - Script: scripts/fetch_rules.py
+   - Merges discovered feeds into: rules/combined.rules
 
-### 1. **Feed Discovery**
-Run `scripts/discover_suricata_feeds.py`
+3. Post-Processing
+   - Script: scripts/postprocess_rules.py
+   - Tasks:
+     • Remove duplicates
+     • Detect SID collisions
+     • Disable selected rules (conf/disable.conf)
+     • Apply rule modifications (conf/modify.conf)
+     • Re-enable rules (conf/enable.conf)
+   - Output:
+     • rules/combined.final.rules
+     • rules/duplicates.rules
+     • rules/disabled.rules
+     • rules/sid_collisions.log
 
-- Pulls rules from feeds listed in `scripts/discover_suricata_feeds.py`
-- Saves each source’s rules to `discovered_rules/`
-- Logs source name, rule count, and success/failure status
+4. Sync Status Logging
+   - File: rules/sync_status.log
+   - Sample Log Entry:
+     🕒 Sync Time: 2025-07-14 17:00 UTC
+     📦 Final Rule Count: 8421
+     🪪 SID Collisions: 3
+     ✅ Status: Completed
 
-### 2. **Rule Merging**
-Run `scripts/fetch_rules.py`
+5. GitHub Actions Scheduling
+   - File: .github/workflows/update-suricata-rules.yml
+   - Runs every 12 hours at midnight & noon EST (5am/5pm UTC)
+   - Uses cron: 0 5,17 * * *
+   - Supports manual trigger via workflow_dispatch
 
-- Merges individual feed `.rules` files into `rules/combined.rules`
-- Prepares the rule corpus for cleanup and curation
+----------------------------------------------------------------------
+Directory Structure
+----------------------------------------------------------------------
 
-### 3. **Post-Processing**
-Run `scripts/postprocess_rules.py`
+.
+├── discovered_rules/        # Raw downloaded rules per feed
+├── rules/
+│   ├── combined.rules        # Merged raw rules
+│   ├── combined.final.rules  # Post-processed rule set
+│   ├── duplicates.rules      # Removed duplicates
+│   ├── disabled.rules        # Disabled via conf rules
+│   ├── sid_collisions.log    # Detected SID conflicts
+│   └── sync_status.log       # Last sync summary
+├── conf/
+│   ├── enable.conf           # Force-enable rules
+│   ├── disable.conf          # Disable rules selectively
+│   └── modify.conf           # Rewrite rule fields
+├── scripts/
+│   ├── discover_suricata_feeds.py
+│   ├── fetch_rules.py
+│   └── postprocess_rules.py
+└── .github/workflows/
+    └── update-suricata-rules.yml
 
-- Reads `combined.rules` and outputs:
-  - `combined.final.rules` — clean and ready for deployment
-  - `duplicates.rules` — duplicate rules removed from final set
-  - `disabled.rules` — rules filtered due to override logic
-  - `sid_collisions.log` — report of overlapping SIDs across feeds
-- Applies overrides from `conf/`:
-  - `enable.conf` — forces rules to remain active
-  - `disable.conf` — disables specific rules by SID
-  - `modify.conf` — rewrites rule attributes using search/replace
+----------------------------------------------------------------------
+GitHub Token Setup
+----------------------------------------------------------------------
 
-### 4. **Sync Status Logging**
-After post-processing, the workflow appends a status heartbeat:
+Required for GitHub API search:
 
-```text
-🕒 Sync Time: 2025-07-14 17:00 UTC
-📦 Final Rule Count: 8421
-🪪 SID Collisions: 3
-✅ Status: Completed
+1. Create a token with `public_repo` scope
+2. Save to repo secrets as: GH_API_TOKEN
+3. The discovery script uses this via os.getenv("GH_API_TOKEN")
+
+----------------------------------------------------------------------
+Conf File Examples
+----------------------------------------------------------------------
+
+enable.conf:
+  1050001     # Force-enable specific rules
+
+disable.conf:
+  2003142     # Disable noisy or legacy rules
+
+modify.conf:
+  1050001 msg "Exploit attempt"
+  classtype shellcode-detect classtype web-application-attack
+
+----------------------------------------------------------------------
+Roadmap
+----------------------------------------------------------------------
+
+- Source tagging via source_map.json
+- Export sid_registry.json for dashboards
+- Slack/webhook alerts on sync success or failure
+- Feed health scoring and retry logic
+- Rule scoring via CVE metadata or AI
+
+----------------------------------------------------------------------
+Credits & License
+----------------------------------------------------------------------
+
+MIT License
+
+Created by Daniel Clark
+Architected with support from Microsoft Copilot  
+Optimized for scalable, traceable Suricata deployments
+
+Useful Resources:
+- Suricata Documentation: https://suricata.io/documentation/
+- Abuse.ch SSLBL: https://sslbl.abuse.ch/
+- Emerging Threats: https://rules.emergingthreats.net/

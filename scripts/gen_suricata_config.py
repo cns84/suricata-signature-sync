@@ -4,25 +4,27 @@ import re
 from datetime import datetime
 
 # 1. Resolve paths
-script_dir = os.path.dirname(os.path.abspath(__file__))
-repo_root  = os.path.abspath(os.path.join(script_dir, ".."))
-rules_path = os.path.join(repo_root, "rules", "combined.rules")
+script_dir  = os.path.dirname(os.path.abspath(__file__))
+repo_root   = os.path.abspath(os.path.join(script_dir, ".."))
+rules_path  = os.path.join(repo_root, "rules", "combined.rules")
 output_path = "/tmp/suricata.yaml"
 
-# 2. Base address‐group defaults
+print(f"🔍 Scanning rules file at: {rules_path}")
+
+# 2. Define safe defaults for known network groups
 address_defaults = {
-    "HOME_NET":        "[192.168.1.0/24]",
-    "EXTERNAL_NET":    "[8.8.8.8,1.1.1.1]",
-    "HTTP_SERVERS":    "[192.168.1.10]",
-    "DNS_SERVERS":     "[192.168.1.53]",
-    "SMTP_SERVERS":    "[192.168.1.25]",
-    "SQL_SERVERS":     "[192.168.1.143]",
+    "HOME_NET":         "[192.168.1.0/24]",
+    "EXTERNAL_NET":     "[8.8.8.8,1.1.1.1]",
+    "HTTP_SERVERS":     "[192.168.1.10]",
+    "DNS_SERVERS":      "[192.168.1.53]",
+    "SMTP_SERVERS":     "[192.168.1.25]",
+    "SQL_SERVERS":      "[192.168.1.143]",
     "SHELLCODE_SERVERS":"[192.168.1.200]",
-    "SIP_SERVERS":     "[$HOME_NET]",
-    "AIM_SERVERS":     "[$HOME_NET]"
+    "SIP_SERVERS":      "[192.168.1.60]",
+    "AIM_SERVERS":      "[192.168.1.99]",
 }
 
-# 3. Safe default port‐group mappings
+# 3. Define safe defaults for known port groups
 port_defaults = {
     "HTTP_PORTS":     "[80,443,8080,8000]",
     "DNS_PORTS":      "[53]",
@@ -37,22 +39,28 @@ port_defaults = {
     "RDP_PORTS":      "[3389]"
 }
 
-# 4. Scan combined.rules for any $*_PORTS
-detected_ports = set()
+# 4. Patterns for detection
+net_pattern  = re.compile(r"\$(\w+(?:_NET|_SERVERS))\b")
 port_pattern = re.compile(r"\$(\w+_PORTS)\b")
 
+detected_nets  = set()
+detected_ports = set()
+
+# 5. Scan combined.rules
 if os.path.exists(rules_path):
     with open(rules_path, "r") as f:
         for line in f:
+            for var in net_pattern.findall(line):
+                detected_nets.add(var)
             for var in port_pattern.findall(line):
                 detected_ports.add(var)
 else:
-    print(f"❌ combined.rules not found at {rules_path}, skipping port var scan")
+    print(f"❌ {rules_path} not found, skipping variable detection")
 
-# 5. Print what we found
-print(f"🔍 Detected port variables: {sorted(detected_ports)}")
+print(f"🔍 Detected network variables: {sorted(detected_nets)}")
+print(f"🔍 Detected port variables:    {sorted(detected_ports)}")
 
-# 6. Build the YAML lines
+# 6. Build config lines
 lines = [
     "%YAML 1.1",
     "---",
@@ -60,24 +68,26 @@ lines = [
     "vars:",
     "  address-groups:"
 ]
-# 6a. Address‐group entries
-for name, cidr in address_defaults.items():
-    lines.append(f"    {name}: \"{cidr}\"")
 
-# 6b. Port‐group entries
-lines.append("")  # blank line for readability
+# 6a. Populate address-groups
+for var in sorted(detected_nets):
+    val = address_defaults.get(var, "[0.0.0.0/0]")
+    lines.append(f'    {var}: "{val}"')
+
+# 6b. Populate port-groups
+lines.append("")              # blank line for readability
 lines.append("  port-groups:")
-for port_var in sorted(detected_ports):
-    val = port_defaults.get(port_var, "[1]")
-    lines.append(f"    {port_var}: \"{val}\"")
+for var in sorted(detected_ports):
+    val = port_defaults.get(var, "[1]")
+    lines.append(f'    {var}: "{val}"')
 
 # 7. Final stanzas
-lines.append("")  # blank line
+lines.append("")              
 lines.append("default-rule-path: rules")
 lines.append("default-log-dir: /tmp/suricata-logs")
-lines.append("")  # ensure trailing newline
+lines.append("")              # ensure trailing newline
 
-# 8. Write out config
+# 8. Write out the YAML
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 with open(output_path, "w") as out:
     out.write("\n".join(lines))

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # ✅ Enables push access for GITHUB_TOKEN
+  contents: write  # ✅ Enables GITHUB_TOKEN push access if ever needed
 
 jobs:
   update:
@@ -14,8 +14,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: true  # ✅ Required for push
-          token: ${{ secrets.PAT_TOKEN }}
+          persist-credentials: true  # ✅ Required to enable git push
+          token: ${{ secrets.PAT_TOKEN }}  # ✅ Use personal access token for secure commits
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -25,6 +25,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
+          pip install requests  # ✅ Required by fetch_rules.py
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Fetch community Suricata rules
@@ -44,7 +45,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y suricata
           mkdir -p /tmp/suricata-logs
-          suricata -T -c suricata.yaml -S rules/combined.rules
+          suricata -T -c suricata.yaml -S rules/combined.rules  # ✅ Config now generated in repo root
 
       - name: Commit & push updated rules and config
         run: |

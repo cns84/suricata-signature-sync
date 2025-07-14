@@ -124,7 +124,7 @@ Useful Resources:
 - Emerging Threats: https://rules.emergingthreats.net/
 
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: _pending_
-Rule count: _pending_
-SID collisions: _pending_
+Last sync: 2025-07-14 20:41 UTC
+Rule count: 81216
+SID collisions: 0
 <!-- SYNC_STATUS_END -->

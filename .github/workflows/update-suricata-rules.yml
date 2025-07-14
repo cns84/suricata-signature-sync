@@ -48,13 +48,6 @@ jobs:
       - name: Generate dynamic Suricata config
         run: python scripts/gen_suricata_config.py
 
-      - name: Validate merged Suricata rules
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y suricata
-          mkdir -p /tmp/suricata-logs
-          suricata -T -c suricata.yaml -S rules/combined.rules  # ✅ Config now generated in repo root
-
       - name: Write sync status log
         run: |
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
@@ -72,6 +65,13 @@ jobs:
           git add rules/combined.final.rules rules/sync_status.log
           git commit -m "🔄 Sync update $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "No changes to commit"
           git push
+
+      - name: Validate merged Suricata rules
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y suricata
+          mkdir -p /tmp/suricata-logs
+          suricata -T -c suricata.yaml -S rules/combined.rules  # ✅ Config now generated in repo root
 
       - name: Commit & push updated rules and config
         run: |

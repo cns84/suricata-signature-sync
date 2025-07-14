@@ -30,6 +30,9 @@ jobs:
           pip install requests  # ✅ Required by fetch_rules.py
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      - name: Run preflight check
+        run: python scripts/preflight_check.py
+
       - name: Fetch community Suricata rules
         run: python scripts/fetch_rules.py
 

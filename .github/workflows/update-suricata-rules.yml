@@ -55,6 +55,24 @@ jobs:
           mkdir -p /tmp/suricata-logs
           suricata -T -c suricata.yaml -S rules/combined.rules  # ✅ Config now generated in repo root
 
+      - name: Write sync status log
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
+          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          echo "🕒 Sync Time: $TIMESTAMP" >> rules/sync_status.log
+          echo "📦 Final Rule Count: $RULE_COUNT" >> rules/sync_status.log
+          echo "🪪 SID Collisions: $COLLISIONS" >> rules/sync_status.log
+          echo "✅ Status: Completed" >> rules/sync_status.log
+
+      - name: Commit final rules and sync log
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add rules/combined.final.rules rules/sync_status.log
+          git commit -m "🔄 Sync update $(date -u +'%Y-%m-%d %H:%M UTC')" || echo "No changes to commit"
+          git push
+
       - name: Commit & push updated rules and config
         run: |
           git config user.name "github-actions"

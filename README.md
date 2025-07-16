@@ -153,7 +153,5 @@ REMOVED SINATURES
 ------------------------------------------------------------------
 
 <!-- REMOVALS_BEGIN -->
-Invalid rules removed: 2  
-SID 1050410 — missing `msg`  
-SID 2030144 — malformed `content:` field  
+🧹 Rule removal summary will appear here after sync.
 <!-- REMOVALS_END -->

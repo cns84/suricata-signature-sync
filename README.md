@@ -50,7 +50,7 @@ Pipeline Workflow Overview
    - Workflow automatically replaces metadata block at bottom of README.md
    - Uses clear marker anchors for automated edits:
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-16 08:48 UTC
+Last sync: 2025-07-16 09:10 UTC
 Rule count: 81280
 SID collisions: 0
 <!-- SYNC_STATUS_END -->
@@ -143,7 +143,7 @@ SYNC STATUS
 ------------------------------------------------------------------
 
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-16 08:48 UTC
+Last sync: 2025-07-16 09:10 UTC
 Rule count: 81280
 SID collisions: 0
 <!-- SYNC_STATUS_END -->
@@ -153,5 +153,6 @@ REMOVED SINATURES
 ------------------------------------------------------------------
 
 <!-- REMOVALS_BEGIN -->
-🧹 Rule removal summary will appear here after sync.
+🕒 Last rule cleanup: 2025-07-16 09:10 UTC
+✅ No invalid rules removed in the latest sync.
 <!-- REMOVALS_END -->

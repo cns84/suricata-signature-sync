@@ -109,6 +109,9 @@ jobs:
       - name: Log removed rule count to sync status
         run: python scripts/update_status.py
         
+      - name: Inject removal report into README
+        run: python scripts/removed_rules_report.py
+
       - name: Commit & push updated rules and config
         run: |
           git config user.name "github-actions"

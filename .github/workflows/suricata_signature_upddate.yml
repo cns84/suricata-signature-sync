@@ -1,0 +1,83 @@
+name: update-suricata-rules
+
+on:
+  #schedule:
+  #  - cron: '0 5,17 * * *'  # Runs every 12 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  staging:
+    name: 🧪 Staging Sync & Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT_PUSH_TOKEN }}
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install requests
+
+      - name: Fetch & Merge Rules
+        run: |
+          python scripts/fetch_rules.py
+          python scripts/fetch_et_rules.py
+          python scripts/merge_rules.py
+
+      - name: Post-process & Generate Config
+        run: |
+          python scripts/postprocess_rules.py
+          python scripts/gen_suricata_config.py
+
+      - name: Validate Suricata Rules
+        run: |
+          sudo apt-get update && sudo apt-get install -y suricata
+          suricata -T -c suricata.yaml -S rules/combined.rules
+
+  production:
+    name: 🚀 Production Sync & Push
+    needs: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT_PUSH_TOKEN }}
+          persist-credentials: true
+
+      - name: Update sync logs & README
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
+          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          echo "🕒 Sync Time: $TIMESTAMP" >> rules/sync_status.log
+          echo "📦 Final Rule Count: $RULE_COUNT" >> rules/sync_status.log
+          echo "🪪 SID Collisions: $COLLISIONS" >> rules/sync_status.log
+          echo "✅ Status: Completed" >> rules/sync_status.log
+
+          sed -i '/<!-- SYNC_STATUS_BEGIN -->/,/<!-- SYNC_STATUS_END -->/c\
+          <!-- SYNC_STATUS_BEGIN -->\
+          Last sync: '"$TIMESTAMP"'\
+          Rule count: '"$RULE_COUNT"'\
+          SID collisions: '"$COLLISIONS"'\
+          <!-- SYNC_STATUS_END -->' README.md
+
+      - name: Commit rules & README
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add rules/combined.final.rules rules/sync_status.log README.md suricata.yaml
+          git commit -m "🔄 Production sync: $TIMESTAMP" || echo "No changes"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main

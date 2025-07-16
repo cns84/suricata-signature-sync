@@ -55,15 +55,15 @@ Pipeline Workflow Overview
 
 7. README Sync Status Update
    Workflow automatically replaces metadata blocks using anchors:
-   <!-- SYNC_STATUS_BEGIN -->
-   Last sync: 2025-07-16 10:38 UTC
-   Rule count: 81280
-   <!-- SYNC_STATUS_END -->
+<!-- SYNC_STATUS_BEGIN -->
+Last sync: 2025-07-16 17:47 UTC
+Rule count: 81280
+<!-- SYNC_STATUS_END -->
 
    <!-- REMOVALS_BEGIN -->
-   🕒 Last rule cleanup: 2025-07-16 10:38 UTC
-   ✅ No invalid rules removed in the latest sync.
-   <!-- REMOVALS_END -->
+🕒 Last rule cleanup: 2025-07-16 17:47 UTC
+✅ No invalid rules removed in the latest sync.
+<!-- REMOVALS_END -->
 
 8. GitHub Actions Automation
    Workflow file: .github/workflows/suricata_signature_update.yml

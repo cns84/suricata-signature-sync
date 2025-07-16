@@ -1,9 +1,9 @@
 Suricata Signature Sync
 =======================
 
-Automated feed discovery, rule curation, and deployment for high-performance Suricata pipelines.
+Automated feed discovery, rule curation, validation, and remediation for high-performance Suricata pipelines.
 
-This repository powers a scalable signature management system for Suricata. It dynamically pulls rules from public sources, applies post-processing to ensure hygiene and accuracy, and updates your rule corpus every 12 hours via GitHub Actions. Includes override logic, SID collision detection, status logging, and README metadata updates.
+This repository powers a scalable signature management system for Suricata. It dynamically pulls rules from public sources, applies post-processing to ensure hygiene and accuracy, validates the ruleset, removes broken signatures, and updates your corpus every 12 hours via GitHub Actions. Includes override logic, SID collision detection, sync logging, and README metadata injection.
 
 Built for large-scale environments with thousands of sensors and high-volume traffic.
 
@@ -17,99 +17,109 @@ Pipeline Workflow Overview
    - Logs last modified timestamps
    - Detects missing assets before execution
 
-2. Feed Discovery
-   Script: scripts/discover_suricata_feeds.py
-   - Downloads rules from multiple public sources
-   - Optionally searches GitHub using GH_API_TOKEN
-   - Output saved to: discovered_rules/
+2. Feed Fetching
+   Script: scripts/fetch_suricata_feeds.py
+   - Downloads rules from community and ET sources
+   - Handles ZIP/TAR formats securely
+   - Output saved to: rules/community/, rules/emerging/
 
-3. Rule Compilation
-   Script: scripts/fetch_rules.py
-   - Merges discovered `.rules` files into rules/combined.rules
-
-4. Post-Processing & Overrides
-   Script: scripts/postprocess_rules.py
-   - Removes duplicates
-   - Detects SID collisions and logs them
-   - Applies control from conf/disable.conf, enable.conf, modify.conf
+3. Rule Merging & Post-Processing
+   Scripts: scripts/merge_rules.py, scripts/postprocess_rules.py
+   - Combines `.rules` files into combined.rules
+   - Removes duplicates, detects SID collisions
+   - Applies overrides from conf/*.conf
    - Final output: rules/combined.final.rules
-   - Logs generated:
+   - Logs:
      - duplicates.rules
      - disabled.rules
      - sid_collisions.log
 
-5. Sync Metadata Logging
-   - Output written to: rules/sync_status.log
-   - Includes:
-     - Sync time (UTC)
-     - Final rule count
-     - SID collision count
-     - Sync status flag
+4. Suricata Validation
+   - Runs suricata -T in test mode
+   - Errors logged to: rules/suricata_errors.log
 
-6. README Sync Status Update
-   - Workflow automatically replaces metadata block at bottom of README.md
-   - Uses clear marker anchors for automated edits:
-<!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-16 10:38 UTC
-Rule count: 81280
-<!-- SYNC_STATUS_END -->
+5. Remediation & Reporting
+   Script: scripts/remediate_and_report.py
+   - Removes invalid rules based on error lines/SIDs
+   - Logs removed rules to removed.rules
+   - Appends removal count to sync_status.log
+   - Injects summary block into README.md
 
-7. GitHub Actions Automation
-   Workflow file: .github/workflows/update-suricata-rules.yml
-   - Scheduled every 12 hours (00:00 and 12:00 EST)
+6. Sync Metadata Logging
+   Output written to: rules/sync_status.log
+   Includes:
+   - Sync time (UTC)
+   - Final rule count
+   - SID collision count
+   - Removal count
+
+7. README Sync Status Update
+   Workflow automatically replaces metadata blocks using anchors:
+   <!-- SYNC_STATUS_BEGIN -->
+   Last sync: 2025-07-16 10:38 UTC
+   Rule count: 81280
+   <!-- SYNC_STATUS_END -->
+
+   <!-- REMOVALS_BEGIN -->
+   🕒 Last rule cleanup: 2025-07-16 10:38 UTC
+   ✅ No invalid rules removed in the latest sync.
+   <!-- REMOVALS_END -->
+
+8. GitHub Actions Automation
+   Workflow file: .github/workflows/suricata_signature_update.yml
+   - Scheduled every 12 hours (05:00 and 17:00 UTC)
    - Cron: 0 5,17 * * *
-   - Manual trigger available via workflow_dispatch
-   - Commits curated rule output and README changes
+   - Manual trigger via workflow_dispatch
+   - Commits curated rule output and README changes only if updates occurred
 
 ------------------------------------------------------------------
 Directory Structure
 ------------------------------------------------------------------
-
-```bash
+``` bash
 .
-├── discovered_rules/              # Raw rules from external feeds
 ├── rules/
 │   ├── combined.rules
 │   ├── combined.final.rules
-│   ├── duplicates.rules
-│   ├── disabled.rules
+│   ├── removed.rules
 │   ├── sid_collisions.log
-│   └── sync_status.log
+│   ├── sync_status.log
+│   └── suricata_errors.log
 ├── conf/
 │   ├── enable.conf
 │   ├── disable.conf
 │   └── modify.conf
 ├── scripts/
-│   ├── discover_suricata_feeds.py
-│   ├── fetch_rules.py
+│   ├── fetch_suricata_feeds.py
+│   ├── merge_rules.py
 │   ├── postprocess_rules.py
-│   └── preflight_check.py
+│   ├── preflight_check.py
+│   └── remediate_and_report.py
 └── .github/workflows/
-    └── update-suricata-rules.yml
+    └── suricata_signature_update.yml
 ```
 
 ------------------------------------------------------------------
 GitHub Token Setup
 ------------------------------------------------------------------
 
-To enable GitHub API searches:
+To enable GitHub API searches (optional):
 
-1. Create a personal access token with `public_repo` scope.
+1. Create a personal access token with public_repo scope
 2. Save it to repo secrets as: GH_API_TOKEN
-3. The discovery script uses: os.getenv("GH_API_TOKEN")
+3. Discovery script uses: os.getenv("GH_API_TOKEN")
 
 ------------------------------------------------------------------
 Conf File Examples
 ------------------------------------------------------------------
 
-conf/disable.conf:
+disable.conf
   1050001    # Disable noisy rule
   2003142    # Disable legacy rule
 
-conf/enable.conf:
+enable.conf
   1050001    # Force-enable useful rule
 
-conf/modify.conf:
+modify.conf
   1050001 msg "Exploit attempt"
   classtype shellcode-detect classtype web-application-attack
 
@@ -117,10 +127,10 @@ conf/modify.conf:
 Future Enhancements
 ------------------------------------------------------------------
 
-- Add inline source tagging via source_map.json
-- Export sid_registry.json for dashboards and alert enrichment
-- Slack/webhook notifications on rule changes or sync alerts
-- Feed health scoring and adaptive retry logic
+- Quarantine removed rules instead of deleting
+- Export sid_registry.json for dashboards
+- Slack/webhook alerts on rule changes
+- Feed health scoring and retry logic
 - Rule scoring via CVE age, relevance, or AI heuristics
 
 ------------------------------------------------------------------
@@ -136,21 +146,3 @@ External Resources:
 - Suricata Documentation: https://suricata.io/documentation/
 - SSLBL Feed (Abuse.ch): https://sslbl.abuse.ch/
 - Emerging Threats: https://rules.emergingthreats.net/
-
-------------------------------------------------------------------
-SYNC STATUS
-------------------------------------------------------------------
-
-<!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-16 10:38 UTC
-Rule count: 81280
-<!-- SYNC_STATUS_END -->
-
-------------------------------------------------------------------
-REMOVED SINATURES
-------------------------------------------------------------------
-
-<!-- REMOVALS_BEGIN -->
-🕒 Last rule cleanup: 2025-07-16 10:38 UTC
-✅ No invalid rules removed in the latest sync.
-<!-- REMOVALS_END -->

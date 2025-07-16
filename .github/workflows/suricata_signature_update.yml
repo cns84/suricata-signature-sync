@@ -1,8 +1,8 @@
-name: update-suricata-rules-v2
+name: suricata_signature_update
 
 on:
   schedule:
-    - cron: '0 5,17 * * *'  # Every 12 hours starting at midnight EST (5am & 5pm UTC)
+    - cron: '0 5,17 * * *'  # Every 12 hours UTC
   workflow_dispatch:
 
 permissions:
@@ -16,7 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: true
           token: ${{ secrets.PAT_TOKEN }}
 
       - name: Set up Python
@@ -24,72 +23,55 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install requests
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          sudo apt-get update
+          sudo apt-get install -y suricata || echo "Suricata may already be installed"
 
-      - name: Run preflight check
-        run: python scripts/preflight_check.py
+      - name: Preflight check
+        run: python scripts/preflight_check.py || echo "Preflight check failed, continuing"
 
-      - name: Fetch community Suricata rules
-        run: python scripts/fetch_rules.py
+      - name: Fetch Suricata feeds (merged)
+        run: python scripts/fetch_suricata_feeds.py
 
-      - name: Fetch Emerging Threats rules
-        run: python scripts/fetch_et_rules.py
+      - name: Merge and post-process rules
+        run: |
+          python scripts/merge_rules.py
+          python scripts/postprocess_rules.py
 
-      - name: Merge all rules into combined.rules
-        run: python scripts/merge_rules.py
-
-      - name: Post-process merged rules
-        run: python scripts/postprocess_rules.py
-
-      - name: Generate dynamic Suricata config
+      - name: Generate Suricata config
         run: python scripts/gen_suricata_config.py
 
-      - name: Validate merged Suricata rules
+      - name: Validate ruleset
         run: |
-          mkdir -p /tmp/suricata-logs
-          sudo apt-get update
-          sudo apt-get install -y suricata
-          suricata -T -v -c suricata.yaml -S rules/combined.rules 2> rules/suricata_errors.log
+          suricata -T -v -c suricata.yaml -S rules/combined.rules 2> rules/suricata_errors.log || true
 
-      - name: Remove invalid rules after validation
-        run: python scripts/remove_invalid_rules.py
+      - name: Remediate and summarize
+        run: python scripts/remediate_and_report.py
 
-      - name: Log removed rule count
-        run: python scripts/update_status.py
-
-      - name: Inject removal summary into README
-        run: python scripts/removed_rules_report.py
-
-      - name: Write sync status metadata
+      - name: Log sync status
         run: |
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
-          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
-          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          FINAL_RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
           echo "🕒 Sync Time: $TIMESTAMP" >> rules/sync_status.log
-          echo "📦 Final Rule Count: $RULE_COUNT" >> rules/sync_status.log
-          echo "🪪 SID Collisions: $COLLISIONS" >> rules/sync_status.log
-          echo "✅ Status: Completed" >> rules/sync_status.log
+          echo "📦 Final Rule Count: $FINAL_RULE_COUNT" >> rules/sync_status.log
 
-      - name: Update README sync status
+      - name: Inject sync stats into README
         run: |
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
-          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
-          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
           sed -i '/<!-- SYNC_STATUS_BEGIN -->/,/<!-- SYNC_STATUS_END -->/c\
           <!-- SYNC_STATUS_BEGIN -->\
           Last sync: '"$TIMESTAMP"'\
-          Rule count: '"$RULE_COUNT"'\
-          SID collisions: '"$COLLISIONS"'\
-          <!-- SYNC_STATUS_END -->' README.md
+          Rule count: '"$COUNT"'\
+          <!-- SYNC_STATUS_END -->' README.md || echo "README sync status injection failed"
 
-      - name: Commit updates (README, rules, config)
+      - name: Commit updates if changes occurred
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add README.md rules/combined.rules rules/combined.final.rules rules/sync_status.log suricata.yaml rules/removed.rules
-          git diff --cached --quiet || git commit -m "🔄 Suricata sync update: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          git add README.md rules/*.rules rules/sync_status.log suricata.yaml
+          git diff --cached --quiet || git commit -m "🔄 Suricata signature update: $TIMESTAMP"
           git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} main

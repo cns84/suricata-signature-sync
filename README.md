@@ -50,9 +50,9 @@ Pipeline Workflow Overview
    - Workflow automatically replaces metadata block at bottom of README.md
    - Uses clear marker anchors for automated edits:
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-15 17:43 UTC
-Rule count: 81216
-SID collisions: 0
+Last sync: 2025-07-16 03:27 UTC
+Rule count: 81336
+SID collisions: 57
 <!-- SYNC_STATUS_END -->
 
 7. GitHub Actions Automation
@@ -143,7 +143,7 @@ SYNC STATUS
 ------------------------------------------------------------------
 
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: 2025-07-15 17:43 UTC
-Rule count: 81216
-SID collisions: 0
+Last sync: 2025-07-16 03:27 UTC
+Rule count: 81336
+SID collisions: 57
 <!-- SYNC_STATUS_END -->

@@ -147,3 +147,11 @@ Last sync: 2025-07-16 03:37 UTC
 Rule count: 81355
 SID collisions: 60
 <!-- SYNC_STATUS_END -->
+
+------------------------------------------------------------------
+REMOVED SINATURES
+------------------------------------------------------------------
+
+<!-- REMOVALS_BEGIN -->
+Last sync removed: SID 1002023, SID 1050410 (invalid metadata)
+<!-- REMOVALS_END -->

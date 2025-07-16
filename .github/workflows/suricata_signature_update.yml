@@ -1,8 +1,6 @@
 name: update-suricata-rules-v2
 
 on:
-  schedule:
-    - cron: '0 5,17 * * *'  # Every 12 hours UTC
   workflow_dispatch:
 
 permissions:

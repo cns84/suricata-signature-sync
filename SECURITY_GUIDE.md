@@ -58,7 +58,7 @@ This guide documents the security principles and operational hygiene practices e
 | Token usage                      | `PAT_TOKEN` stored in GitHub secrets       |
 | Commit enforcement               | Commits only on actual rule changes        |
 | Permissions                      | Workflow uses `contents: write` only       |
-| Suricata install failure fallback| `|| true` used for graceful fallback       |
+| Suricata install failure fallback| `\|\| true` used for graceful fallback       |
 
 ---
 

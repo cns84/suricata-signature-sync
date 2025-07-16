@@ -1,4 +1,5 @@
-name: update-suricata-rules
+name: suricata_signature_update
+description: Update Suricata rules and sync metadata
 
 on:
   #schedule:

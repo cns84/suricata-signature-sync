@@ -1,0 +1,95 @@
+name: update-suricata-rules-v2
+
+on:
+  schedule:
+    - cron: '0 5,17 * * *'  # Every 12 hours UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run preflight check
+        run: python scripts/preflight_check.py
+
+      - name: Fetch community Suricata rules
+        run: python scripts/fetch_rules.py
+
+      - name: Fetch Emerging Threats rules
+        run: python scripts/fetch_et_rules.py
+
+      - name: Merge all rules into combined.rules
+        run: python scripts/merge_rules.py
+
+      - name: Post-process merged rules
+        run: python scripts/postprocess_rules.py
+
+      - name: Generate dynamic Suricata config
+        run: python scripts/gen_suricata_config.py
+
+      - name: Validate merged Suricata rules
+        run: |
+          mkdir -p /tmp/suricata-logs
+          sudo apt-get update
+          sudo apt-get install -y suricata
+          suricata -T -v -c suricata.yaml -S rules/combined.rules 2> rules/suricata_errors.log
+
+      - name: Remove invalid rules after validation
+        run: python scripts/remove_invalid_rules.py
+
+      - name: Log removed rule count
+        run: python scripts/update_status.py
+
+      - name: Inject removal summary into README
+        run: python scripts/removed_rules_report.py
+
+      - name: Write sync status metadata
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
+          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          echo "🕒 Sync Time: $TIMESTAMP" >> rules/sync_status.log
+          echo "📦 Final Rule Count: $RULE_COUNT" >> rules/sync_status.log
+          echo "🪪 SID Collisions: $COLLISIONS" >> rules/sync_status.log
+          echo "✅ Status: Completed" >> rules/sync_status.log
+
+      - name: Update README sync status
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          RULE_COUNT=$(grep -c "alert " rules/combined.final.rules || echo 0)
+          COLLISIONS=$(grep -c "SID " rules/sid_collisions.log || echo 0)
+          sed -i '/<!-- SYNC_STATUS_BEGIN -->/,/<!-- SYNC_STATUS_END -->/c\
+          <!-- SYNC_STATUS_BEGIN -->\
+          Last sync: '"$TIMESTAMP"'\
+          Rule count: '"$RULE_COUNT"'\
+          SID collisions: '"$COLLISIONS"'\
+          <!-- SYNC_STATUS_END -->' README.md
+
+      - name: Commit updates (README, rules, config)
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add README.md rules/combined.rules rules/combined.final.rules rules/sync_status.log suricata.yaml rules/removed.rules
+          git diff --cached --quiet || git commit -m "🔄 Suricata sync update: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} main

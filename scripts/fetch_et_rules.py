@@ -3,11 +3,11 @@ import os
 import tarfile
 
 # URL to the compressed rules archive
-url = "https://rules.emergingthreatspro.com/2453920106313671/suricata-7.0.10/etpro-all.rules.tar.gz"
+url = "https://rules.emergingthreats.net/open/suricata-7.0.3/emerging-all.rules.tar.gz"
 
 # Local file paths
 output_dir = "rules"
-archive_path = "etpro-all.rules.tar.gz"
+archive_path = "emerging-all.rules.tar.gz"
 
 # Ensure the output directory exists
 os.makedirs(output_dir, exist_ok=True)

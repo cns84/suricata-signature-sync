@@ -1,8 +1,8 @@
 name: update-suricata-rules
 
 on:
-  schedule:
-    - cron: '0 5,17 * * *'  # Every 12 hours starting at midnight EST (5am & 5pm UTC)
+  #schedule:
+  #  - cron: '0 5,17 * * *'  # Every 12 hours starting at midnight EST (5am & 5pm UTC)
   workflow_dispatch:       # Optional manual trigger
 
 permissions:

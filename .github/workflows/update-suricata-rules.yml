@@ -103,6 +103,12 @@ jobs:
           mkdir -p /tmp/suricata-logs
           suricata -T -c suricata.yaml -S rules/combined.rules  # ✅ Config now generated in repo root
 
+      - name: Remove invalid rules after Suricata validation
+        run: python scripts/remove_invalid_rules.py
+
+      - name: Log removed rule count to sync status
+        run: python scripts/update_status.py
+        
       - name: Commit & push updated rules and config
         run: |
           git config user.name "github-actions"

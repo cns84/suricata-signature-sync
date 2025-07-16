@@ -153,5 +153,7 @@ REMOVED SINATURES
 ------------------------------------------------------------------
 
 <!-- REMOVALS_BEGIN -->
-Last sync removed: SID 1002023, SID 1050410 (invalid metadata)
+Invalid rules removed: 2  
+SID 1050410 — missing `msg`  
+SID 2030144 — malformed `content:` field  
 <!-- REMOVALS_END -->

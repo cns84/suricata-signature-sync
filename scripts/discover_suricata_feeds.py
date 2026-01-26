@@ -4,7 +4,7 @@ import re
 
 # Static known public feeds
 STATIC_FEEDS = {
-    "ET Open": "https://rules.emergingthreats.net/open/suricata-5.0/emerging.rules",
+    "ET Open": "https://rules.emergingthreats.net/open/suricata-7.0.3/emerging-all.rules",
     "TrafficID": "https://openinfosecfoundation.org/rules/trafficid/trafficid.rules",
     "Corelight": "https://feed.corelight.com/rules/corelight.rules",
     "CriticalPathSecurity": "https://raw.githubusercontent.com/CriticalPathSecurity/Suricata-Signatures/main/merged.rules",

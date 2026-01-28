@@ -138,7 +138,8 @@ License & Credits
 ------------------------------------------------------------------
 
 MIT License  
-Created by Daniel  
+Created by Daniel Clark
+Email: cns_84@outlook.com
 Architected with guidance from Microsoft Copilot 🤝  
 Optimized for scalable and traceable Suricata deployments.
 

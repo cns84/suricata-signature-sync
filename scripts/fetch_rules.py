@@ -5,7 +5,6 @@ import os
 
 STATIC_FEEDS = {
     "TrafficID": "https://openinfosecfoundation.org/rules/trafficid/trafficid.rules",
-    "Corelight": "https://feed.corelight.com/rules/corelight.rules",
     "SSLBL": "https://sslbl.abuse.ch/blacklist/sslblacklist.rules"
 }
 

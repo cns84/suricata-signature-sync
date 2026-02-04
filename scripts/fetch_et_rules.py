@@ -2,6 +2,8 @@ import requests
 import os
 import tarfile
 
+# Comments
+
 # URL to the compressed rules archive
 url = "https://rules.emergingthreats.net/open/suricata-7.0.3/emerging-all.rules.tar.gz"
 

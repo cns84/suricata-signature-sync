@@ -14,14 +14,14 @@ STATIC_FEEDS = {
 
 # GitHub search (requires token for rate-limit avoidance)
 #GITHUB_SEARCH_URL = "https://api.github.com/search/code?q=extension:rules+suricata+in:path"
-GITHUB_TOKEN = os.getenv("GH_API_TOKEN")  # ✅ Set via GitHub Actions Secret
-
-HEADERS = {
-    "Accept": "application/vnd.github.v3+json",
-    "User-Agent": "suricata-feed-discovery"
-}
-if GITHUB_TOKEN:
-    HEADERS["Authorization"] = f"token {GITHUB_TOKEN}"
+#GITHUB_TOKEN = os.getenv("GH_API_TOKEN")  # ✅ Set via GitHub Actions Secret
+#
+#HEADERS = {
+#    "Accept": "application/vnd.github.v3+json",
+#    "User-Agent": "suricata-feed-discovery"
+#}
+#if GITHUB_TOKEN:
+#    HEADERS["Authorization"] = f"token {GITHUB_TOKEN}"
 
 OUTPUT_DIR = "discovered_rules"
 os.makedirs(OUTPUT_DIR, exist_ok=True)

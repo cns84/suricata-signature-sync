@@ -61,7 +61,7 @@ Rule count: 101554
 <!-- SYNC_STATUS_END -->
 
    <!-- REMOVALS_BEGIN -->
-🕒 Last rule cleanup: 2026-05-19 03:07 UTC
+🕒 Last rule cleanup: 2026-05-19 03:22 UTC
 ✅ No invalid rules removed in the latest sync.
 <!-- REMOVALS_END -->
 

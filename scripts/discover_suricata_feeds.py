@@ -7,14 +7,14 @@ STATIC_FEEDS = {
     "ET Open": "https://rules.emergingthreats.net/open/suricata-7.0.3/emerging-all.rules",
     "TrafficID": "https://openinfosecfoundation.org/rules/trafficid/trafficid.rules",
     "Corelight": "https://feed.corelight.com/rules/corelight.rules",
-    "CriticalPathSecurity": "https://raw.githubusercontent.com/CriticalPathSecurity/Suricata-Signatures/main/merged.rules",
+    #"CriticalPathSecurity": "https://raw.githubusercontent.com/CriticalPathSecurity/Suricata-Signatures/main/merged.rules",
     "SSLBL": "https://sslbl.abuse.ch/blacklist/sslblacklist.rules",
-    "Open NRD": "https://raw.githubusercontent.com/StamusNetworks/open-nrd-rules/main/open-nrd.rules.txt"
+    #"Open NRD": "https://raw.githubusercontent.com/StamusNetworks/open-nrd-rules/main/open-nrd.rules.txt"
 }
 
 # GitHub search (requires token for rate-limit avoidance)
-GITHUB_SEARCH_URL = "https://api.github.com/search/code?q=extension:rules+suricata+in:path"
-GITHUB_TOKEN = os.getenv("GH_API_TOKEN")  # ✅ Set via GitHub Actions Secret
+#GITHUB_SEARCH_URL = "https://api.github.com/search/code?q=extension:rules+suricata+in:path"
+#GITHUB_TOKEN = os.getenv("GH_API_TOKEN")  # ✅ Set via GitHub Actions Secret
 
 HEADERS = {
     "Accept": "application/vnd.github.v3+json",

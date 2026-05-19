@@ -2,6 +2,7 @@ name: suricata_signature_update
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  GH_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   schedule:

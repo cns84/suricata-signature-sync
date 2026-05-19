@@ -39,6 +39,9 @@ jobs:
       - name: Fetch Suricata feeds (merged)
         run: python scripts/fetch_suricata_feeds.py
 
+      - name: Fetch PAW PAT rules
+        run: python scripts/fetch_paw_patrules.py
+
       - name: Merge and post-process rules
         run: |
           python scripts/merge_rules.py

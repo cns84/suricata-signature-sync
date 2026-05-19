@@ -23,7 +23,7 @@ HEADERS = {
 if GITHUB_TOKEN:
     HEADERS["Authorization"] = f"token {GITHUB_TOKEN}"
 
-OUTPUT_DIR = "discovered_rules"
+OUTPUT_DIR = "rules"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 

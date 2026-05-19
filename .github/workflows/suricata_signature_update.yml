@@ -36,8 +36,11 @@ jobs:
       - name: Preflight check
         run: python scripts/preflight_check.py || echo "Preflight check failed, continuing"
 
-      - name: Fetch Suricata feeds (merged)
-        run: python scripts/fetch_suricata_feeds.py
+#      - name: Fetch Suricata feeds (merged)
+#        run: python scripts/fetch_suricata_feeds.py
+
+      - name: Discover Suricata feeds (merged)
+        run: python scripts/discover_suricata_feeds.py
 
       - name: Fetch PAW PAT rules
         run: python scripts/fetch_paw_patrules.py

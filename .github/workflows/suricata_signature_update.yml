@@ -1,5 +1,8 @@
 name: suricata_signature_update
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     - cron: '0 5,17 * * *'  # Every 12 hours UTC

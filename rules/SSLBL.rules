@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-06-05 05:40:02 UTC                        #
+# Last updated: 2026-06-06 07:03:33 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -9834,4 +9834,12 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ConnectWise C&C)"; tls.fingerprint:"54:5e:17:b0:c2:76:40:88:90:44:d9:78:0e:f0:f3:ad:88:25:b5:5a"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/545e17b0c27640889044d9780ef0f3ad8825b55a/; sid:902209824; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ConnectWise C&C)"; tls.fingerprint:"de:d6:02:8e:f6:2f:02:58:e1:71:21:e6:be:ec:e5:d9:b1:24:d4:8f"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/ded6028ef62f0258e17121e6beece5d9b124d48f/; sid:902209825; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"e1:c3:2b:52:b2:97:f0:78:60:e5:c2:ff:0b:0e:f6:04:d8:d9:29:fc"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/e1c32b52b297f07860e5c2ff0b0ef604d8d929fc/; sid:902209826; rev:1;)
-# END (9827) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (HijackLoader C&C)"; tls.fingerprint:"d9:13:08:0e:f7:94:a3:bb:0a:60:e3:95:bf:d7:2c:00:cc:47:12:ac"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/d913080ef794a3bb0a60e395bfd72c00cc4712ac/; sid:902209827; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (KongTuke C&C)"; tls.fingerprint:"16:35:aa:6d:93:7f:44:88:7d:78:71:b1:0c:e2:cc:bd:f7:6d:09:f0"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/1635aa6d937f44887d7871b10ce2ccbdf76d09f0/; sid:902209828; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (CobaltStrike C&C)"; tls.fingerprint:"6f:df:1f:14:5d:05:c5:69:11:1a:e6:6c:ca:64:e7:13:dc:12:21:50"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/6fdf1f145d05c569111ae66cca64e713dc122150/; sid:902209829; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"5d:56:41:6d:22:df:f9:c9:c1:fa:6a:fa:54:27:60:ff:b7:99:b6:27"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/5d56416d22dff9c9c1fa6afa542760ffb799b627/; sid:902209830; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ConnectWise C&C)"; tls.fingerprint:"83:9f:5f:87:d7:3c:a2:15:f8:64:88:6d:c5:85:2a:55:fa:f8:92:87"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/839f5f87d73ca215f864886dc5852a55faf89287/; sid:902209831; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (QuasarRAT C&C)"; tls.fingerprint:"ae:59:05:45:96:1e:96:de:86:0e:a7:43:4c:0e:8c:69:b9:24:de:6f"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/ae590545961e96de860ea7434c0e8c69b924de6f/; sid:902209832; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"44:d3:17:f1:bd:fc:f7:67:0d:28:8c:91:2c:ec:d0:73:7b:c4:cc:1b"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/44d317f1bdfcf7670d288c912cecd0737bc4cc1b/; sid:902209833; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (RatonRAT C&C)"; tls.fingerprint:"18:26:e2:44:05:95:46:f2:72:8d:9d:ca:86:49:48:28:c9:5d:03:13"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/1826e244059546f2728d9dca86494828c95d0313/; sid:902209834; rev:1;)
+# END (9835) entries

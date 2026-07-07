@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-07-07 06:25:25 UTC                        #
+# Last updated: 2026-07-07 14:20:28 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -10094,4 +10094,5 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (RatonRAT C&C)"; tls.fingerprint:"22:54:9b:9d:0f:61:cb:1d:81:ef:6a:ea:0e:bc:36:89:e3:8f:12:df"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/22549b9d0f61cb1d81ef6aea0ebc3689e38f12df/; sid:902210084; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureRAT C&C)"; tls.fingerprint:"14:5b:58:5a:8d:47:72:43:e2:29:f4:d6:60:d1:a9:fc:40:b3:82:43"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/145b585a8d477243e229f4d660d1a9fc40b38243/; sid:902210085; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (KongTuke C&C)"; tls.fingerprint:"40:08:66:db:d7:d2:f5:1f:ba:b5:f7:f7:3e:98:f6:0d:f8:e0:d7:98"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/400866dbd7d2f51fbab5f7f73e98f60df8e0d798/; sid:902210086; rev:1;)
-# END (10087) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (MSDuckStealer C&C)"; tls.fingerprint:"bc:a6:27:ea:4b:11:ce:23:58:79:ac:54:bc:f5:ca:21:21:a6:ed:0c"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/bca627ea4b11ce235879ac54bcf5ca2121a6ed0c/; sid:902210087; rev:1;)
+# END (10088) entries

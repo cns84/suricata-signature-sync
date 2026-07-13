@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-07-12 08:12:14 UTC                        #
+# Last updated: 2026-07-13 06:11:28 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -10133,4 +10133,6 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"dc:bc:38:3f:1a:16:d4:b8:ba:a7:bf:ca:1b:b0:23:f7:f6:5c:36:f7"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/dcbc383f1a16d4b8baa7bfca1bb023f7f65c36f7/; sid:902210123; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ACRStealer C&C)"; tls.fingerprint:"a1:33:ce:08:8d:9e:ad:15:85:5e:13:43:b8:e6:43:73:6d:47:d7:d9"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/a133ce088d9ead15855e1343b8e643736d47d7d9/; sid:902210124; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"7a:8f:36:1d:18:8e:55:26:51:fe:a1:20:4d:53:99:d8:89:31:2d:a2"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/7a8f361d188e552651fea1204d5399d889312da2/; sid:902210125; rev:1;)
-# END (10126) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ACRStealer C&C)"; tls.fingerprint:"25:b1:2b:66:23:c8:56:99:b1:28:e0:b4:9f:ab:30:5f:a6:b5:32:91"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/25b12b6623c85699b128e0b49fab305fa6b53291/; sid:902210126; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ACRStealer C&C)"; tls.fingerprint:"7d:df:e4:90:34:7d:c2:8f:3e:39:de:9b:e9:d6:19:40:b6:b9:85:26"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/7ddfe490347dc28f3e39de9be9d61940b6b98526/; sid:902210127; rev:1;)
+# END (10128) entries

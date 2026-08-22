@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-08-21 08:57:04 UTC                        #
+# Last updated: 2026-08-22 11:04:08 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -10484,4 +10484,12 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"5b:27:6d:28:10:6c:b7:d9:1d:d5:f8:10:e6:1d:95:23:d3:4c:78:04"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/5b276d28106cb7d91dd5f810e61d9523d34c7804/; sid:902210474; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"b9:52:85:b6:b0:61:fd:0a:cf:6a:5a:e9:54:33:d7:03:f5:2d:18:72"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/b95285b6b061fd0acf6a5ae95433d703f52d1872/; sid:902210475; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"de:75:67:aa:2c:e3:67:cb:09:15:ff:d8:eb:55:b1:e3:20:e7:26:c9"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/de7567aa2ce367cb0915ffd8eb55b1e320e726c9/; sid:902210476; rev:1;)
-# END (10477) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ConnectWise C&C)"; tls.fingerprint:"0c:58:7f:31:dc:58:c3:3e:f2:e3:63:2b:b1:61:f4:d5:22:31:b7:c1"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/0c587f31dc58c33ef2e3632bb161f4d52231b7c1/; sid:902210477; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ConnectWise C&C)"; tls.fingerprint:"ad:fc:8d:d0:c5:e9:9a:8e:33:b1:df:7d:5c:10:fc:96:53:34:24:91"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/adfc8dd0c5e99a8e33b1df7d5c10fc9653342491/; sid:902210478; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (OffLoader C&C)"; tls.fingerprint:"8d:8f:08:4d:df:27:29:d1:f4:74:7f:2a:42:8d:d8:d9:b1:3e:1c:fa"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/8d8f084ddf2729d1f4747f2a428dd8d9b13e1cfa/; sid:902210479; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Malware C&C)"; tls.fingerprint:"d8:bd:c2:9b:8e:9c:dd:5a:84:91:85:ca:60:42:d9:c6:f9:0d:12:e7"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/d8bdc29b8e9cdd5a849185ca6042d9c6f90d12e7/; sid:902210480; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureRAT C&C)"; tls.fingerprint:"01:16:2a:a2:c2:be:7f:9d:16:f6:46:b9:4a:12:45:72:6c:68:b1:10"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/01162aa2c2be7f9d16f646b94a1245726c68b110/; sid:902210481; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Malware distribution)"; tls.fingerprint:"15:0e:9f:ff:c9:13:a1:c8:7b:f9:4e:7f:2a:d0:35:4d:4b:6a:fe:a1"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/150e9fffc913a1c87bf94e7f2ad0354d4b6afea1/; sid:902210482; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"19:cf:66:ba:a4:72:7b:08:0e:28:3d:10:28:49:93:17:0c:9b:46:2b"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/19cf66baa4727b080e283d10284993170c9b462b/; sid:902210483; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Malware C&C)"; tls.fingerprint:"9c:0a:92:91:be:46:e4:2b:67:83:5d:ff:9e:6c:76:7f:d6:66:02:87"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/9c0a9291be46e42b67835dff9e6c767fd6660287/; sid:902210484; rev:1;)
+# END (10485) entries

@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-08-27 15:35:05 UTC                        #
+# Last updated: 2026-08-28 13:41:42 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -10527,4 +10527,12 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ConnectWise C&C)"; tls.fingerprint:"77:b9:90:3c:53:8d:04:5e:26:6b:d4:d6:cf:40:ed:e0:b0:40:b4:03"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/77b9903c538d045e266bd4d6cf40ede0b040b403/; sid:902210517; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (OffLoader C&C)"; tls.fingerprint:"dd:ac:60:6a:1c:f8:9b:62:ca:d4:4c:a5:9a:e7:98:63:78:f1:91:e7"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/ddac606a1cf89b62cad44ca59ae7986378f191e7/; sid:902210518; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (RatonRAT C&C)"; tls.fingerprint:"7f:11:1c:69:f4:22:66:b4:74:92:71:56:f1:03:d7:08:43:e7:f8:2b"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/7f111c69f42266b474927156f103d70843e7f82b/; sid:902210519; rev:1;)
-# END (10520) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"9f:04:64:e2:9f:b9:43:33:e1:ad:31:74:0b:f4:d4:bf:f8:9c:bd:28"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/9f0464e29fb94333e1ad31740bf4d4bff89cbd28/; sid:902210520; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ACRStealer C&C)"; tls.fingerprint:"4a:67:cf:02:97:c6:30:8d:31:cb:d2:e8:9c:d5:24:68:17:bb:13:30"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/4a67cf0297c6308d31cbd2e89cd5246817bb1330/; sid:902210521; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ACRStealer C&C)"; tls.fingerprint:"94:71:1c:10:93:35:05:9b:b2:dc:4d:33:8f:33:d3:08:30:04:d6:fa"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/94711c109335059bb2dc4d338f33d3083004d6fa/; sid:902210522; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (QuasarRAT C&C)"; tls.fingerprint:"d1:23:d7:f4:3d:63:54:5c:7a:8f:64:3a:cb:e7:3e:81:f3:5c:3f:14"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/d123d7f43d63545c7a8f643acbe73e81f35c3f14/; sid:902210523; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"84:16:72:d7:28:07:0f:0e:45:19:a6:50:a9:c8:61:8f:9b:80:c5:02"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/841672d728070f0e4519a650a9c8618f9b80c502/; sid:902210524; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (OffLoader C&C)"; tls.fingerprint:"9d:49:5a:9c:64:6e:39:62:ac:54:45:e9:b4:da:68:32:16:4d:c4:ee"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/9d495a9c646e3962ac5445e9b4da6832164dc4ee/; sid:902210525; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (ACRStealer C&C)"; tls.fingerprint:"d9:da:29:88:d9:0a:24:79:eb:45:e1:fc:66:ff:46:b0:4f:22:89:f2"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/d9da2988d90a2479eb45e1fc66ff46b04f2289f2/; sid:902210526; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"85:08:e1:44:57:ad:7d:e3:21:ed:dd:f3:68:8e:12:4d:5f:1d:65:2c"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/8508e14457ad7de321edddf3688e124d5f1d652c/; sid:902210527; rev:1;)
+# END (10528) entries

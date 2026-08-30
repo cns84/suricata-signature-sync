@@ -1,0 +1,27 @@
+# Vidar 3.x family-oriented Suricata rules
+# SIDs 7500001-7500004 are local examples; allocate them for your environment.
+# HTTP signatures require plaintext/decrypted app-layer visibility.
+
+# Method-agnostic multipart gate check-in with a mobile Google-app UA.
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"LOCAL TROJAN Vidar 3.x multipart gate check-in"; \
+  flow:established,to_server; http.user_agent; content:"Mozilla/5.0"; startswith; content:" GSA/"; \
+  http.request_body; content:"name=\"hwid\""; content:"name=\"build_id\""; \
+  content:"name=\"format\""; classtype:trojan-activity; sid:7500001; rev:1;)
+
+# Telegram public-profile resolver fetch with the family-observed legacy UA.
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"LOCAL TROJAN Vidar Telegram resolver fetch"; \
+  flow:established,to_server; http.host; content:"telegram.me"; endswith; nocase; \
+  http.user_agent; content:"Gecko/20100101 Firefox/34.0"; \
+  classtype:trojan-activity; sid:7500002; rev:1;)
+
+# Epic community-profile resolver fetch.
+alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"LOCAL TROJAN Vidar Epic profile resolver fetch"; \
+  flow:established,to_server; http.host; content:"dev.epicgames.com"; endswith; nocase; \
+  http.uri; content:"/community/api/user_profiles/profile.json"; \
+  http.user_agent; content:"Gecko/20100101 Firefox/34.0"; \
+  classtype:trojan-activity; sid:7500003; rev:1;)
+
+# Dead-drop record visible in HTTP response content or exported web artifacts.
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL TROJAN Vidar dead-drop record response"; \
+  flow:established,to_client; file_data; content:"o0oi1"; nocase; content:"enc:"; distance:0; within:24; nocase; \
+  classtype:trojan-activity; sid:7500004; rev:1;)

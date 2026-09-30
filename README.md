@@ -56,12 +56,12 @@ Pipeline Workflow Overview
 7. README Sync Status Update
    Workflow automatically replaces metadata blocks using anchors:
 <!-- SYNC_STATUS_BEGIN -->
-Last sync: 2026-09-29 21:17 UTC
-Rule count: 86099
+Last sync: 2026-09-30 10:56 UTC
+Rule count: 86142
 <!-- SYNC_STATUS_END -->
 
    <!-- REMOVALS_BEGIN -->
-🕒 Last rule cleanup: 2026-09-29 21:17 UTC
+🕒 Last rule cleanup: 2026-09-30 10:56 UTC
 ✅ No invalid rules removed in the latest sync.
 <!-- REMOVALS_END -->
 

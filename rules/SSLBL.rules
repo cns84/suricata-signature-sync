@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-10-05 08:51:24 UTC                        #
+# Last updated: 2026-10-05 13:04:04 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -10850,4 +10850,6 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"4e:01:83:3e:f1:9d:db:e7:74:70:12:a4:b0:8e:54:60:1b:c3:18:ae"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/4e01833ef19ddbe7747012a4b08e54601bc318ae/; sid:902210840; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"77:c6:20:cd:80:ac:90:a2:63:80:83:50:b4:13:3b:60:7d:97:33:73"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/77c620cd80ac90a263808350b4133b607d973373/; sid:902210841; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"18:4e:5e:de:55:f2:ea:f5:84:18:29:89:d8:a4:14:11:b6:d3:4a:e0"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/184e5ede55f2eaf584182989d8a41411b6d34ae0/; sid:902210842; rev:1;)
-# END (10843) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (AokigaharaStealer C&C)"; tls.fingerprint:"92:0d:e1:7c:5b:fc:e7:9d:f2:95:0d:ac:fb:6a:1f:47:3e:91:8e:dc"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/920de17c5bfce79df2950dacfb6a1f473e918edc/; sid:902210843; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"6d:ef:26:54:b3:b6:8f:b8:91:42:11:3e:6c:5a:d1:b9:e8:66:13:4c"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/6def2654b3b68fb89142113e6c5ad1b9e866134c/; sid:902210844; rev:1;)
+# END (10845) entries

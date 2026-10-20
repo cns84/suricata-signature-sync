@@ -1,7 +1,7 @@
 ################################################################
 # abuse.ch Suricata IDS SSL Certificate Ruleset                #
 # For Suricata 1.4 or newer                                    #
-# Last updated: 2026-10-18 12:25:30 UTC                        #
+# Last updated: 2026-10-20 06:27:30 UTC                        #
 #                                                              #
 # Terms Of Use: https://sslbl.abuse.ch/blacklist/              #
 # For questions please contact sslbl [at] abuse.ch             #
@@ -10947,4 +10947,9 @@ alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certific
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"e2:23:4a:a6:6c:80:b1:18:b6:92:11:f6:e8:f4:ef:bd:57:8a:75:87"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/e2234aa66c80b118b69211f6e8f4efbd578a7587/; sid:902210937; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Malware C&C)"; tls.fingerprint:"ea:ef:d8:2d:a9:4e:e8:83:96:66:b2:a4:2d:24:dc:c4:12:d7:de:3c"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/eaefd82da94ee8839666b2a42d24dcc412d7de3c/; sid:902210938; rev:1;)
 alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"38:15:1a:6b:24:38:b2:b6:45:a2:7a:89:1e:1e:15:78:6f:11:a7:83"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/38151a6b2438b2b645a27a891e1e15786f11a783/; sid:902210939; rev:1;)
-# END (10940) entries
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (Vidar C&C)"; tls.fingerprint:"90:01:ac:23:44:dd:d1:b2:e3:2f:5d:25:b5:e5:6b:32:3e:6f:c8:62"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/9001ac2344ddd1b2e32f5d25b5e56b323e6fc862/; sid:902210940; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureRAT C&C)"; tls.fingerprint:"75:96:47:11:a6:e1:08:49:d2:32:b5:df:09:f4:28:a4:ea:a4:8a:68"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/75964711a6e10849d232b5df09f428a4eaa48a68/; sid:902210941; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (RatonRAT C&C)"; tls.fingerprint:"90:61:73:7b:3e:3c:b6:da:e0:a0:2a:be:33:34:6d:72:cc:d2:7a:f4"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/9061737b3e3cb6dae0a02abe33346d72ccd27af4/; sid:902210942; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (PureLogsStealer C&C)"; tls.fingerprint:"9a:22:05:a1:5c:88:6d:62:78:d9:e0:d6:07:47:e8:ad:28:7b:6c:7b"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/9a2205a15c886d6278d9e0d60747e8ad287b6c7b/; sid:902210943; rev:1;)
+alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"SSLBL: Malicious SSL certificate detected (OffLoader C&C)"; tls.fingerprint:"59:fb:8a:90:64:9c:ac:57:e3:45:fb:d3:af:9f:76:d6:a7:3f:ac:12"; reference:url, sslbl.abuse.ch/ssl-certificates/sha1/59fb8a90649cac57e345fbd3af9f76d6a73fac12/; sid:902210944; rev:1;)
+# END (10945) entries
